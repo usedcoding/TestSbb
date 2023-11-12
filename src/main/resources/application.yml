@@ -12,3 +12,9 @@ spring:
     hibernate:
       ddl-auto: update
       format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tjqls2013@gmail.com
+    password: bini980929!!

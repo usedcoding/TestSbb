@@ -1,0 +1,27 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+
+<div>
+    <h5>회원정보수정</h5>
+    <form  class="usrmodify" th:action="@{/user/modify}" th:object="${userForm}" method="post">
+        <div>
+            <span>USER ID :</span>
+            <span class="usremail" th:text='${user.username}'></span>
+        </div>
+        <div>
+            <span>New PW : </span>
+            <input type="password" th:field="*{password1}" style="color:black;">
+        </div>
+        <div>
+            <span>Re-New Pw : </span>
+            <input type="password" th:field="*{password2}" style="color:black;">
+        </div>
+        <div>
+            <button type="submit" id="submitButton">Reset</button>
+        </div>
+    </form>
+
+</div>
+
+</div>
+</html>

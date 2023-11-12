@@ -3,11 +3,16 @@ package com.example.TESTsbb.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Controller
@@ -50,5 +55,32 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "login_form";
+    }
+
+    @GetMapping("/modify")
+    public String userModify(Model model, Principal principal) {
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        UserForm userForm = new UserForm();
+        model.addAttribute("user", siteUser);
+        model.addAttribute("userForm", userForm);
+        return "userModify_form";
+    }
+
+
+    @PostMapping("/modify")
+    @PreAuthorize("isAuthenticated()")
+    @ResponseBody
+    public String userEdit(UserForm userForm, Principal principal, BindingResult bindingResult) {
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        if (bindingResult.hasErrors()) {
+            return "다시 시도해 주세요. ";
+        }else if (userForm.getPassword1().equals("")) {
+            return "변경할 비밀번호를 입력해주세요";
+        }else if (!userForm.getPassword1().equals(userForm.getPassword2())) {
+            return "비밀번호 2개가 일치하지 않습니다.";
+        }else {
+            this.userService.modifyUser(siteUser,userForm.getPassword1());
+            return "성공적으로 수정되었습니다.";
+        }
     }
 }
