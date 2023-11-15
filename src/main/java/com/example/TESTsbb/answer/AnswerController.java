@@ -1,8 +1,6 @@
 package com.example.TESTsbb.answer;
 
-import com.example.TESTsbb.DataNotFoundException;
 import com.example.TESTsbb.quesiton.Question;
-import com.example.TESTsbb.quesiton.QuestionRepository;
 import com.example.TESTsbb.quesiton.QuestionService;
 import com.example.TESTsbb.user.SiteUser;
 import com.example.TESTsbb.user.UserService;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RequestMapping("/answer")
 @RequiredArgsConstructor
@@ -39,7 +35,7 @@ public class AnswerController {
             model.addAttribute("question", question);
             return "question_detail";
         }
-        this.answerService.create(question, answerForm.getContent(),siteUser);
+        this.answerService.create(question, answerForm.getContent(), siteUser);
         return String.format("redirect:/question/detail/%s", id);
     }
 

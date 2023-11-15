@@ -43,4 +43,7 @@ public class Question {
     private List<Comment> comment;
 
     private String theme;
+
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
 }

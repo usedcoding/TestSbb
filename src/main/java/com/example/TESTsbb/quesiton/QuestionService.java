@@ -4,7 +4,6 @@ import com.example.TESTsbb.DataNotFoundException;
 import com.example.TESTsbb.answer.Answer;
 import com.example.TESTsbb.user.SiteUser;
 import jakarta.persistence.criteria.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,13 +32,31 @@ public class QuestionService {
         return this.questionRepository.findAll(spec, pageable);
     }
 
-    public Question getQuestion(Integer id) {
-        Optional<Question> question = this.questionRepository.findById(id);
-        if (question.isPresent()) {
-            return question.get();
-        } else {
-            throw new DataNotFoundException("question not found");
-        }
+//    public Question getQuestion(Integer id) {
+//        Optional<Question> question = this.questionRepository.findById(id);
+//        if (question.isPresent()) {
+//            return question.get();
+//        } else {
+//            throw new DataNotFoundException("question not found");
+//        }
+//    }
+public Question getQuestion(Integer id) {
+    Optional<Question> question = this.questionRepository.findById(id);
+    if (question.isPresent()) {
+        Question question1 = question.get();
+        question1.setView(question1.getView() + 1);
+        this.questionRepository.save(question1);
+        return question1;
+    } else {
+        throw new DataNotFoundException("question not found");
+    }
+}
+
+    public List<Question> getQuestionByAuthor(SiteUser siteUser) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.asc("id"));
+        return this.questionRepository.findByAuthor(siteUser);
+
     }
 
     public void create(String subject, String content, SiteUser siteUser, String theme){

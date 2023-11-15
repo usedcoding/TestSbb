@@ -1,0 +1,72 @@
+
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+
+<div class="img-box">
+    <img th:src="@{|/gen/${siteUser.thumbnailImg}|}"/>
+</div>
+<div th:text="${user.email}"></div>
+
+<table class="table">
+    <h2> 내가 작성한 질문</h2>
+    <thead class="table-dark">
+    <tr class="text-center">
+        <th>번호</th>
+        <th style="width:50%">제목</th>
+        <th>카테고리</th>
+        <th>작성일시</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- myquestionList에 있는 각각의 question에 대해 반복 -->
+    <tr class="text-center" th:each="question : ${myquestionList}">
+        <td><span th:text="${question.id}"></span></td>
+        <td style="text-align:center"><span  style="width:50%" th:text="${question.subject}"></span></td>
+        <td><span th:text="${question.theme}"></span></td>
+        <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<table class="table">
+    <h2> 내가 작성한 답변</h2>
+    <thead class="table-dark">
+    <tr class="text-center">
+        <th>번호</th>
+        <th style="width:50%">내용</th>
+        <th>작성일시</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr class="text-center" th:each="answer : ${myanswerList}">
+        <td><span th:text="${answer.id}"></span></td>
+        <td style="text-align:center"><span style="width:50%"  th:text="${answer.content}"></span></td>
+        <td th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<table class="table">
+    <h2> 내가 작성한 댓글</h2>
+    <thead class="table-dark">
+    <tr class="text-center">
+        <th>번호</th>
+        <th style="width:50%">내용</th>
+        <th>작성일시</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- myquestionList에 있는 각각의 question에 대해 반복 -->
+    <tr class="text-center" th:each="comment : ${mycommentList}">
+        <td><span th:text="${comment.id}"></span></td>
+        <td style="text-align:center"><span style="width:50%"  th:text="${comment.content}"></span></td>
+        <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</div>
+</html>

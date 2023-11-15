@@ -1,9 +1,26 @@
 spring:
-  datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/sb_sbb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+  profiles:
+    active: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 2aeebc881ca280b74bbd0243c792dc62
+            client-secret: your-kakao-client-secret
+            scope: profile_nickname
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password:
   jpa:
     open-in-view: false
     generate-ddl: true
@@ -18,3 +35,13 @@ spring:
     port: 587
     username: tjqls2013@gmail.com
     password: bini980929!!
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+
+
+custom:
+  genFileDirPath: /Users/seobin/Desktop/genfile
+
+
+

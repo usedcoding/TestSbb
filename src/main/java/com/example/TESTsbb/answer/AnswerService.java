@@ -62,4 +62,11 @@ public class AnswerService {
         answer.getVoter().add(siteUser);
         this.answerRepository.save(answer);
     }
+
+    public List<Answer> getAnswerByAuthor(SiteUser siteUser) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.asc("id"));
+        return this.answerRepository.findByAuthor(siteUser);
+
+    }
 }

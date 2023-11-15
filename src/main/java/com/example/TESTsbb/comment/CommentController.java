@@ -2,8 +2,6 @@ package com.example.TESTsbb.comment;
 
 import com.example.TESTsbb.answer.Answer;
 import com.example.TESTsbb.answer.AnswerService;
-import com.example.TESTsbb.quesiton.Question;
-import com.example.TESTsbb.quesiton.QuestionService;
 import com.example.TESTsbb.user.SiteUser;
 import com.example.TESTsbb.user.UserService;
 import lombok.RequiredArgsConstructor;

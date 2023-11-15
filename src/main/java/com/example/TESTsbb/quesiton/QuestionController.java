@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,15 +28,22 @@ public class QuestionController {
     private final AnswerService answerService;
 
     @GetMapping("/list")
-    public String list(Model model,@RequestParam(value="page", defaultValue="0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
+    public String list(Model model,@RequestParam(value="page", defaultValue="0") int page, @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
         Page<Question> paging = this.questionService.getList(page, kw);
+
+        if (principal != null) {
+            SiteUser siteUser = this.userService.getUser(principal.getName());
+            model.addAttribute("siteUser", siteUser);
+            model.addAttribute("userImg", siteUser.getThumbnailImg());
+        }
+
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         return "question_list";
     }
 
     @GetMapping(value = "/list/{theme}")
-    public String questionLsit(Model model, @PathVariable("theme") String key, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String questionLsit(Model model, @PathVariable("theme") String key, @RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {
         String themeKey;
         if (key.equals("Free")) {
             themeKey = "Free";
@@ -64,6 +70,12 @@ public class QuestionController {
             Page<Question> paging = this.questionService.allTheme(page);
             model.addAttribute("paging",paging);
             model.addAttribute("themeKey",themeName);
+        }
+
+        if (principal != null) {
+            SiteUser siteUser = this.userService.getUser(principal.getName());
+            model.addAttribute("siteUser", siteUser);
+            model.addAttribute("userImg", siteUser.getThumbnailImg());
         }
 
         return "question_list";

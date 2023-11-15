@@ -9,14 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class MailController {
 
     private final JavaMailSender mailSender;
@@ -47,22 +45,34 @@ public class MailController {
 
             mailSender.send(mail);
 
-            SiteUser user = userService.getUser(userName);
-            user.setPassword(passwordEncoder.encode(tempPw));
-            userRepository.save(user);
+            SiteUser siteUser = userService.getUser(userName);
+            siteUser.setPassword(passwordEncoder.encode(tempPw));
+            userRepository.save(siteUser);
 
         } catch (Exception e) {
             throw new DataNotFoundException("error");
         }
     }
 
-    public boolean confirmPassword(String password, SiteUser user) {
-        return passwordEncoder.matches(password, user.getPassword());
+    public boolean confirmPassword(String password, SiteUser siteUser) {
+        return passwordEncoder.matches(password, siteUser.getPassword());
     }
 
-    public SiteUser modifyPassword(String password, SiteUser user) {
-        user.setPassword(passwordEncoder.encode(password));
-        this.userRepository.save(user);
-        return user;
+    public SiteUser modifyPassword(String password, SiteUser siteUser) {
+        siteUser.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(siteUser);
+        return siteUser;
+    }
+
+    @GetMapping("/user/forgotPassword")
+    public String showPasswordRecoveryForm() {
+        // 비밀번호 찾기 화면을 보여주는 로직 추가
+        return "user_forgotPassword"; // 이 부분은 실제 비밀번호 찾기 화면의 Thymeleaf 템플릿 이름으로 수정해야 합니다.
+    }
+
+    @PostMapping("/user/forgotPassword")
+    @ResponseBody
+    public void forgotPassword(@RequestParam("email") String userEmail) {
+        userService.initiatePasswordRecovery(userEmail);
     }
 }
