@@ -17,4 +17,4 @@ spring:
     hibernate:
       ddl-auto: update
 custom:
-  genFileDirPath: /Users/seobin/Desktop/genfile
+  genFileDirPath: C:\Users\한재현\Pictures\genFile

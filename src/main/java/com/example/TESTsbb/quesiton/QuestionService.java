@@ -32,7 +32,7 @@ public class QuestionService {
         return this.questionRepository.findAll(spec, pageable);
     }
 
-//    public Question getQuestion(Integer id) {
+    //    public Question getQuestion(Integer id) {
 //        Optional<Question> question = this.questionRepository.findById(id);
 //        if (question.isPresent()) {
 //            return question.get();
@@ -40,17 +40,17 @@ public class QuestionService {
 //            throw new DataNotFoundException("question not found");
 //        }
 //    }
-public Question getQuestion(Integer id) {
-    Optional<Question> question = this.questionRepository.findById(id);
-    if (question.isPresent()) {
-        Question question1 = question.get();
-        question1.setView(question1.getView() + 1);
-        this.questionRepository.save(question1);
-        return question1;
-    } else {
-        throw new DataNotFoundException("question not found");
+    public Question getQuestion(Integer id) {
+        Optional<Question> question = this.questionRepository.findById(id);
+        if (question.isPresent()) {
+            Question question1 = question.get();
+            question1.setView(question1.getView() + 1);
+            this.questionRepository.save(question1);
+            return question1;
+        } else {
+            throw new DataNotFoundException("question not found");
+        }
     }
-}
 
     public List<Question> getQuestionByAuthor(SiteUser siteUser) {
         List<Sort.Order> sorts = new ArrayList<>();

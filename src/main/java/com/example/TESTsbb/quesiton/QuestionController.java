@@ -43,7 +43,7 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/list/{theme}")
-    public String questionLsit(Model model, @PathVariable("theme") String key, @RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {
+    public String questionList(Model model, @PathVariable("theme") String key, @RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {
         String themeKey;
         if (key.equals("Free")) {
             themeKey = "Free";
