@@ -24,11 +24,18 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    //pasge 와 kw 객체를 파라미터로 받는다.
     public Page<Question> getList(int page, String kw) {
+        //새로운 ArrayList 객체를 생성하고 이를 List 타입의 sorts 변수에 저장한다.
         List<Sort.Order> sorts = new ArrayList<>();
+        //sorts 리스트에 새로운 정렬 기준을 추가한다
+        //createDate 속성을 기준으로 내림차순 한다.
         sorts.add(Sort.Order.desc("createDate"));
+        //현재 페이지 번호, 페이지 당 아이템 수, sorts에 저장된 정렬기준에 따라 새로운 pageable 객체를 생성한다.
         Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
+        //주어진 매개변수 kw를 사용하여 search 메서드를 실행하고 생성된 객체를 spec 변수에 저장한다.
         Specification<Question> spec = search(kw);
+        //주어진 매개변수 spec와 pageable을 사용하여 questionRepository에서 질문 목록을 조회하고 결과를 반환한다.
         return this.questionRepository.findAll(spec, pageable);
     }
 
